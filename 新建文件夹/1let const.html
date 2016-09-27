@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>let/const</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		// demo1
+		{
+			let a= 10;
+			var b =1;
+		}
+		// console.log(a);		//报错
+		console.log(b);			//1
+
+		// demo2
+		for(let i=0; i<10; i++) {
+			a[i] = function() {
+				console.log(i);
+			};
+		}
+		// console.log(i)	// 报错
+		
+		// demo3
+		function a() {
+			// var a = 10;
+			// let a = 1;
+		}
+		function func(arg) {
+			// let arg;
+		}
+
+
+//		demo4
+//		块级作用域
+		(function f1() {
+//			外层
+			let n = 5;
+			console.log(n);			//5
+			if(true) {
+//				内层
+				let n =10;
+				console.log(n);		//10
+			}
+			console.log(n);			//5
+		})();
+
+//		demo5
+		if(true) {
+//			ES5会报错
+//			ES6则允许此声明
+			function a() {}
+		}
+//		ES5：inside  , f会被提升
+//		ES6：outside , 产生块级的作用，不会读取if语句块里的f函数
+		function f() {console.log("outside")}
+		(function() {
+			if(false) {
+				function f() {console.log("inside")}
+			}
+			f();
+		}());
+
+
+//		const
+		const PI = 3.1415;
+		const a;//报错
+		if(true) {
+			console.log(MAX);
+			const MAX = 5;
+		}
+//		const声明复合类型变量
+		const foo = {};
+		foo.prop =123;		//可执行
+		const arr = [];
+		arr.push("Hello");	//可执行
+		arr.length = 0;		//可执行
+//		arr = ["World"];	//报错
+
+//		解决：冻结对象Object.freeze
+		const foo = Object.freeze({});
+//		foo.prop = 123;		//报错
+
+//		彻底冻结
+		var constantize = (obj) => {
+			Object.freeze(obj);
+			Object.keys(obj).forEach(key, value) => {
+				if(typeof obj[key] === "object") {
+					constantize(obj[key]);
+				}
+			}
+		}
+
+//		ES6开始，全局变量将逐渐与全局对象的属性脱钩
+		var a= 1;
+		console.log(window.a);		//输出1
+
+		const b = 2;
+		console.log(window.b);		//undefined
+
+		
+	</script>	
+</body>
+</html>
